@@ -2,6 +2,7 @@
 
 namespace Genesis\TestRouting;
 
+use Exception;
 use Traversable;
 
 /**
@@ -26,18 +27,18 @@ class Routing implements RoutingInterface
 
     /**
      * @param string $route
-     * @param callback|null $function The resolved route will be passed in.
+     * @param callable|null $function The resolved route will be passed in.
      *
      * @return string
      */
-    public static function getRoute($name, callback $function = null)
+    public static function getRoute($name, callable $function = null)
     {
-        if (! isset($routes[$name])) {
+        if (! isset(self::$routes[$name])) {
             throw new Exception("Route '$name' not found.");
         }
 
-        if ($callback) {
-            return $callback(self::$routes[$name]);
+        if ($function) {
+            return $function(self::$routes[$name]);
         }
 
         return self::$routes[$name];
@@ -69,7 +70,7 @@ class Routing implements RoutingInterface
      * @param callback $transformationCallback Will receive the contained items one by one in routes. This
      * should return an array [$nameOfRoute, $url]
      */
-    public static function setAllRoutesFromExternalSource(Traversable $routes, callback $transformationCallback)
+    public static function setAllRoutesFromExternalSource(Traversable $routes, callable $transformationCallback)
     {
         foreach ($routes as $route) {
             list($name, $url) = $transformationCallback($route);

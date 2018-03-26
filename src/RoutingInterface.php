@@ -18,11 +18,11 @@ interface RoutingInterface
 
     /**
      * @param string $route
-     * @param callback|null $function The resolved route will be passed in.
+     * @param callable|null $function The resolved route will be passed in.
      *
      * @return string
      */
-    public static function getRoute($name, callback $function = null);
+    public static function getRoute($name, callable $function = null);
 
     /**
      * @return string
@@ -31,11 +31,11 @@ interface RoutingInterface
 
     /**
      * Use to map your existing routing mechanism into the test routing mechanism by providing a transformation
-     * callback.
+     * callable.
      *
      * @param Traversable $routes
-     * @param callback $transformationCallback Will receive the contained items one by one in routes. This
+     * @param callable $transformationcallable Will receive the contained items one by one in routes. This
      * should return an array [$nameOfRoute, $url]
      */
-    public static function setAllRoutesFromExternalSource(Traversable $routes, callback $transformationCallback);
+    public static function setAllRoutesFromExternalSource(Traversable $routes, callable $transformationcallable);
 }
