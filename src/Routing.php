@@ -44,6 +44,16 @@ class Routing implements RoutingInterface
     }
 
     /**
+     * @param array $routes
+     */
+    public static function addRoutes(array $routes)
+    {
+        foreach ($routes as $name => $url) {
+            self::addRoute($name, $url);
+        }
+    }
+
+    /**
      * @return string
      */
     public static function getRoutes()
