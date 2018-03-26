@@ -1,0 +1,25 @@
+{
+    "name": "genesis/test-routing",
+    "type": "behat-extension",
+    "description": "A simple routing extension to work with humanly friendly page names that can be extrapolated onto other routing systems.",
+    "keywords": ["web", "test", "browser", "gui", "bdd", "behaviour", "testing", "test", "integration"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Abdul Wahhab Qureshi",
+            "email": "its.inevitable@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": "~5.5|~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Genesis\\TestRouting\\": "src/",
+            "Genesis\\TestRouting\\Tests\\": "tests/"
+         }
+    }
+}
