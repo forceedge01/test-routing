@@ -44,6 +44,9 @@ Re-using your application routing configuration
 -----------------------------------------------
 
 ```php
+use Genesis\TestRouting\Routing;
+use MyApp\Routing\AppRouter;
+
 $router = new AppRouter($routes);
 // As long as it is an iterable, it will do.
 $routes = $router->getAll();
