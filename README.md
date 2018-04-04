@@ -43,7 +43,7 @@ Output: /home?testing=1
 Re-using your application routing configuration
 -----------------------------------------------
 
-```
+```php
 $router = new AppRouter($routes);
 // As long as it is an iterable, it will do.
 $routes = $router->getAll();
