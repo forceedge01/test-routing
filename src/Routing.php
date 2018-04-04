@@ -66,11 +66,11 @@ class Routing implements RoutingInterface
      * Use to map your existing routing mechanism into the test routing mechanism by providing a transformation
      * callback.
      *
-     * @param Traversable $routes
+     * @param iterable $routes
      * @param callback $transformationCallback Will receive the contained items one by one in routes. This
      * should return an array [$nameOfRoute, $url]
      */
-    public static function setAllRoutesFromExternalSource(Traversable $routes, callable $transformationCallback)
+    public static function setAllRoutesFromExternalSource($routes, callable $transformationCallback)
     {
         foreach ($routes as $route) {
             list($name, $url) = $transformationCallback($route);
