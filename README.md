@@ -1,4 +1,4 @@
-Test Routing
+Test Routing [ ![Codeship Status for forceedge01/test-routing](https://app.codeship.com/projects/2ff83fb0-1a47-0136-0f11-2a3b31bf5093/status?branch=master)](https://app.codeship.com/projects/284254)
 ============
 
 Simple routing to use named pages instead of urls.
