@@ -58,3 +58,15 @@ Routing::setAllRoutesFromExternalSource($routes, function ($route) {
 
 Note: You can bypass the above by using the file data directly most of the time.
 ```
+
+Integrating with the behat-sql-extension
+----------------------------------------
+
+```php
+use Genesis\TestRouting\Routing;
+
+$url = Routing::getRoute($pageName, function ($url) use ($sqlApi) {
+    // Parse out any database keywords with their values from the keystore for dynamic URLs.
+    return $sqlApi->get('keyStore')->parseKeywordsInString($url);
+});
+```
