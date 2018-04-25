@@ -7,6 +7,12 @@ Features:
 - ::getRoute() accepts a callback function that allows manipulation of url before returning final url.
 - ::setAllRoutesFromExternalSource() provides a bridge for other routing mechanisms in place. You can re-use your existing application routing configuration.
 
+Release detail:
+---------------
+Major: Released first version of test routing.
+Minor: Throw custom exception when route not found displaying routes available.
+Patch: NA
+
 Adding a route
 ---------------
 

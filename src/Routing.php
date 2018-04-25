@@ -3,6 +3,7 @@
 namespace Genesis\TestRouting;
 
 use Exception;
+use Genesis\TestRouting\Exception\RouteNotFoundException;
 use Traversable;
 
 /**
@@ -34,7 +35,7 @@ class Routing implements RoutingInterface
     public static function getRoute($name, callable $function = null)
     {
         if (! isset(self::$routes[$name])) {
-            throw new Exception("Route '$name' not found.");
+            throw new RouteNotFoundException($name, array_keys(self::$routes));
         }
 
         if ($function) {
