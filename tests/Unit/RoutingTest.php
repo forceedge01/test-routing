@@ -70,6 +70,19 @@ class RoutingTest extends PHPUnit_Framework_TestCase
         self::assertEquals('/kkk/123/', $url);
     }
 
+    /**
+     * @expectedException Genesis\TestRouting\Exception\RouteNotFoundException
+     */
+    public function testGetRouteExceptionWhenNotFound()
+    {
+        $this->setStaticPropertyValue('routes', [
+            'abc page' => '/abc/123/',
+            'xyz page' => '/xyz/987/'
+        ]);
+
+        Routing::getRoute('banana page');
+    }
+
     public function testAddRoutes()
     {
         $this->setStaticPropertyValue('routes', [
