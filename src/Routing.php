@@ -18,6 +18,20 @@ class Routing implements RoutingInterface
     private static $routes;
 
     /**
+     * @param string $filePath
+     *
+     * @return void
+     */
+    public static function registerFile($filePath)
+    {
+        if (! file_exists($filePath)) {
+            throw new Exception("File to be registered '$filePath' not found.");
+        }
+
+        require $filePath;
+    }
+
+    /**
      * @param string $name
      * @param string $url
      */
@@ -35,6 +49,10 @@ class Routing implements RoutingInterface
     public static function getRoute($name, callable $function = null)
     {
         if (! isset(self::$routes[$name])) {
+            if (! self::$routes) {
+                throw new Exception('No routes registered, please register before calling on routes.');
+            }
+
             throw new RouteNotFoundException($name, array_keys(self::$routes));
         }
 
