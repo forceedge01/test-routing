@@ -10,7 +10,7 @@ use Traversable;
  * Routing class. A simple class, this simplicity is to be retained for the purposes of bridging other
  * routing systems with this one.
  */
-class Routing implements RoutingInterface
+class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRoutingInterface
 {
     /**
      * @var string[]
