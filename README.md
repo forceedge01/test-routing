@@ -34,6 +34,15 @@ $route = Routing::getRoute('home page');
 Output: /home
 ```
 
+Register the file that contains all your routing.
+------------------------------------------------
+
+```php
+use Genesis\TestRouting\Routing;
+
+Routing::registerFile('/my-routes.php');
+```
+
 More advanced form of get
 -------------------------
 
