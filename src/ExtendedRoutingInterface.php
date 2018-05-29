@@ -5,8 +5,7 @@ namespace Genesis\TestRouting;
 use Traversable;
 
 /**
- * Routing class. A simple class, this simplicity is to be retained for the purposes of bridging other
- * routing systems with this one.
+ * Routing interface when working with external routing mechanisms.
  */
 interface ExtendedRoutingInterface
 {
