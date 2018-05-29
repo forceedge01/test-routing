@@ -32,6 +32,29 @@ class RoutingTest extends PHPUnit_Framework_TestCase
         $this->testObject = $this->reflection->newInstanceArgs($this->dependencies);
     }
 
+    /**
+     * @expectedException Exception
+     */
+    public function testRegisterFileNotFound()
+    {
+        Routing::registerFile('/Config/abc.php');
+    }
+
+    public function testRegisterFileFound()
+    {
+        Routing::registerFile(__DIR__ . '/../bootstrap.php');
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testNoRoute()
+    {
+        $route = 'test route';
+
+        Routing::getRoute($route);
+    }
+
     public function testAddRoute()
     {
         $route = 'abc page';

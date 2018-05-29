@@ -10,12 +10,26 @@ use Traversable;
  * Routing class. A simple class, this simplicity is to be retained for the purposes of bridging other
  * routing systems with this one.
  */
-class Routing implements RoutingInterface
+class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRoutingInterface
 {
     /**
      * @var string[]
      */
     private static $routes;
+
+    /**
+     * @param string $filePath
+     *
+     * @return void
+     */
+    public static function registerFile($filePath)
+    {
+        if (! file_exists($filePath)) {
+            throw new Exception("File to be registered '$filePath' not found.");
+        }
+
+        require $filePath;
+    }
 
     /**
      * @param string $name
@@ -35,6 +49,10 @@ class Routing implements RoutingInterface
     public static function getRoute($name, callable $function = null)
     {
         if (! isset(self::$routes[$name])) {
+            if (! self::$routes) {
+                throw new Exception('No routes registered, please register before calling on routes.');
+            }
+
             throw new RouteNotFoundException($name, array_keys(self::$routes));
         }
 
