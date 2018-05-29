@@ -6,6 +6,7 @@ Simple routing to use named pages instead of urls.
 Features:
 - ::getRoute() accepts a callback function that allows manipulation of url before returning final url.
 - ::setAllRoutesFromExternalSource() provides a bridge for other routing mechanisms in place. You can re-use your existing application routing configuration.
+- ::registerFile() register an external file containing all your route definitions. This call is typically contained in one of your context constructor files.
 
 Release detail:
 ---------------
