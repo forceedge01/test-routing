@@ -3,6 +3,8 @@
 namespace Genesis\TestRouting;
 
 use Exception;
+use Genesis\TestRouting\Exception\QueryParamMismatchException;
+use Genesis\TestRouting\Exception\RouteMismatchException;
 use Genesis\TestRouting\Exception\RouteNotFoundException;
 use Traversable;
 
@@ -95,6 +97,63 @@ class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRouting
             list($name, $url) = $transformationCallback($route);
 
             self::$routes[$name] = $url;
+        }
+    }
+
+    /**
+     * @param TableNode $queryParams
+     *
+     * @return string
+     */
+    public static function formQueryParamString(
+        array $queryParams,
+        $strategy = RoutingInterface::CAMEL_CASE
+    ) {
+        $formattedQueryParams = [];
+        foreach ($queryParams as $key => $item) {
+            $formattedQueryParams[self::convert($key, $strategy)] = $item;
+        }
+
+        return http_build_query($formattedQueryParams);
+    }
+
+    /**
+     * @param string $url
+     * @param array $queryParams
+     * @param string $strategy
+     *
+     * @return string
+     */
+    public static function appendQueryParamToUrl(
+        $url,
+        array $queryParams,
+        $strategy = RoutingInterface::CAMEL_CASE
+    ) {
+        return $url .
+            (false === strpos($url, '?') ? '?' : '&' ) .
+            self::formQueryParamString($queryParams, $strategy);
+    }
+
+    /**
+     * @param string $key
+     * @param string $strategy
+     *
+     * @return string
+     */
+    private static function convert($key, $strategy)
+    {
+        switch ($strategy) {
+            case RoutingInterface::CAMEL_CASE:
+                return str_replace(' ', '', lcfirst(ucwords($key)));
+
+            case RoutingInterface::SNAKE_CASE:
+                return str_replace(' ', '_', strtolower($key));
+
+            case RoutingInterface::PASCAL_CASE:
+                return str_replace(' ', '', ucwords($key));
+
+            default:
+                return $key;
         }
     }
 }
