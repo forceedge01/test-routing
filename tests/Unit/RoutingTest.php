@@ -3,6 +3,7 @@
 namespace Genesis\TestRouting\Tests;
 
 use Genesis\TestRouting\Routing;
+use Genesis\TestRouting\RoutingInterface;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
@@ -55,6 +56,9 @@ class RoutingTest extends PHPUnit_Framework_TestCase
         Routing::getRoute($route);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testAddRoute()
     {
         $route = 'abc page';
@@ -165,6 +169,76 @@ class RoutingTest extends PHPUnit_Framework_TestCase
             'abc page' => '/abc/123/',
             'xyz page' => '/xyz/123/'
         ], $routes);
+    }
+
+    public function testFormQueryParamStringDefaultStrategy()
+    {
+        $queryParam = Routing::formQueryParamString([
+            'booking Id' => 123,
+            'User Id' => 888
+        ]);
+
+        self::assertEquals('bookingId=123&userId=888', $queryParam);
+    }
+
+    public function testFormQueryParamStringCamelCaseStrategy()
+    {
+        $queryParam = Routing::formQueryParamString([
+            'booking Id' => 123,
+            'User Id' => 888
+        ], RoutingInterface::CAMEL_CASE);
+
+        self::assertEquals('bookingId=123&userId=888', $queryParam);
+    }
+
+    public function testFormQueryParamStringSnakeCaseStrategy()
+    {
+        $queryParam = Routing::formQueryParamString([
+            'booking Id' => 123,
+            'User Id' => 888
+        ], RoutingInterface::SNAKE_CASE);
+
+        self::assertEquals('booking_id=123&user_id=888', $queryParam);
+    }
+
+    public function testFormQueryParamStringPascalCaseStrategy()
+    {
+        $queryParam = Routing::formQueryParamString([
+            'booking Id' => 123,
+            'User Id' => 888
+        ], RoutingInterface::PASCAL_CASE);
+
+        self::assertEquals('BookingId=123&UserId=888', $queryParam);
+    }
+
+    public function testFormQueryParamStringNoChangeCaseStrategy()
+    {
+        $queryParam = Routing::formQueryParamString([
+            'booking Id' => 123,
+            'User Id' => 888
+        ], RoutingInterface::NO_CHANGE);
+
+        self::assertEquals('booking+Id=123&User+Id=888', $queryParam);
+    }
+
+    public function testAppendQueryParamsToUrlStrategy()
+    {
+        $url = '/booking/';
+        $queryParams = ['booking id' => 55, 'user ID' => 99];
+
+        $fullUrl = Routing::appendQueryParamToUrl($url, $queryParams, RoutingInterface::PASCAL_CASE);
+
+        self::assertEquals('/booking/?BookingId=55&UserID=99', $fullUrl);
+    }
+
+    public function testAppendQueryParamsToUrlStrategyWithExistingQueryParams()
+    {
+        $url = '/booking/?abc=1';
+        $queryParams = ['booking id' => 55, 'user ID' => 99];
+
+        $fullUrl = Routing::appendQueryParamToUrl($url, $queryParams, RoutingInterface::SNAKE_CASE);
+
+        self::assertEquals('/booking/?abc=1&booking_id=55&user_id=99', $fullUrl);
     }
 
     /**
