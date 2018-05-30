@@ -3,15 +3,20 @@ Test Routing [ ![Codeship Status for forceedge01/test-routing](https://app.codes
 
 Simple routing to use named pages instead of urls.
 
-Features:
+Features in Routing class:
 - ::getRoute() accepts a callback function that allows manipulation of url before returning final url.
 - ::setAllRoutesFromExternalSource() provides a bridge for other routing mechanisms in place. You can re-use your existing application routing configuration.
 - ::registerFile() register an external file containing all your route definitions. This call is typically contained in one of your context constructor files.
 
+Features in RouteAssert class:
+- ::page() assert whether a page resolved correctly to a url.
+- ::uri() assert that you are on the correct uri.
+- ::queryParams() assert that the a url holds the correct query params.
+
 Release detail:
 ---------------
 Major: Released first version of test routing.
-Minor: Throw custom exception when route not found displaying routes available.
+Minor: Assertion library added. New calls for building up URL's.
 Patch: NA
 
 Adding a route
