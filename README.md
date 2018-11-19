@@ -72,7 +72,7 @@ $router = new AppRouter($routes);
 // As long as it is an iterable, it will do.
 $routes = $router->getAll();
 
-Routing::setAllRoutesFromExternalSource($routes, function ($route) {
+Routing::setAllRoutesFromExternalSource($routes, function ($route, $index) {
     // $route contains individual elements contained within routes. Just return the name and the url.
     return [$route->getName() => $route->getUrl()];
 });

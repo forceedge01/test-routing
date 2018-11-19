@@ -93,8 +93,8 @@ class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRouting
      */
     public static function setAllRoutesFromExternalSource($routes, callable $transformationCallback)
     {
-        foreach ($routes as $route) {
-            list($name, $url) = $transformationCallback($route);
+        foreach ($routes as $index => $route) {
+            list($name, $url) = $transformationCallback($route, $index);
 
             self::$routes[$name] = $url;
         }
