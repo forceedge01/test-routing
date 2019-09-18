@@ -3,10 +3,7 @@
 namespace Genesis\TestRouting;
 
 use Exception;
-use Genesis\TestRouting\Exception\QueryParamMismatchException;
-use Genesis\TestRouting\Exception\RouteMismatchException;
 use Genesis\TestRouting\Exception\RouteNotFoundException;
-use Traversable;
 
 /**
  * Routing class. A simple class, this simplicity is to be retained for the purposes of bridging other
@@ -43,8 +40,69 @@ class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRouting
     }
 
     /**
-     * @param string $route
+     * Checks that the given url matches the registered route.
+     *
+     * @param string $name
+     * @param string $url
+     *
+     * @return boolean
+     */
+    public static function isRoute($name, $url)
+    {
+        $parsedUrl = parse_url($url);
+
+        if (self::getRoute($name) === $parsedUrl['path']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks that the given url matches the registered route.
+     *
+     * @param array  $name
+     * @param string $url
+     *
+     * @return boolean
+     */
+    public static function isInRoutes(array $names, $url)
+    {
+        $parsedUrl = parse_url($url);
+
+        $urls = [];
+        foreach ($names as $name) {
+            $urls[] = self::getRoute($name);
+        }
+
+        if (array_search($parsedUrl['path'], $urls) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $name
+     * @param string $url
+     *
+     * @return boolean
+     */
+    public static function matchesRoute($name, $url)
+    {
+        $parsedUrl = parse_url($url);
+
+        if (strpos(self::getRoute($name), $parsedUrl['path']) !== false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string        $route
      * @param callable|null $function The resolved route will be passed in.
+     * @param mixed         $name
      *
      * @return string
      */
@@ -89,7 +147,7 @@ class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRouting
      *
      * @param iterable $routes
      * @param callback $transformationCallback Will receive the contained items one by one in routes. This
-     * should return an array [$nameOfRoute, $url]
+     *                                         should return an array [$nameOfRoute, $url]
      */
     public static function setAllRoutesFromExternalSource($routes, callable $transformationCallback)
     {
@@ -102,6 +160,7 @@ class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRouting
 
     /**
      * @param TableNode $queryParams
+     * @param mixed     $strategy
      *
      * @return string
      */
@@ -119,7 +178,7 @@ class Routing implements RoutingInterface, FileRoutingInterface, ExtendedRouting
 
     /**
      * @param string $url
-     * @param array $queryParams
+     * @param array  $queryParams
      * @param string $strategy
      *
      * @return string
