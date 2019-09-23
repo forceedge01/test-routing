@@ -115,8 +115,9 @@ class RoutingContext implements MinkAwareContext
     /**
      * @Then I should be on the :arg1 page
      * @param mixed $arg1
+     * @param mixed $defaultWait
      */
-    public function iShouldBeOnThePage($arg1)
+    public function iShouldBeOnThePage($arg1, $defaultWait = 5)
     {
         $url = $this->router::getRoute($arg1, $this->getCallable());
         $session = $this->getSession();
@@ -128,7 +129,7 @@ class RoutingContext implements MinkAwareContext
             }
 
             return true;
-        }, 3);
+        }, $defaultWait);
     }
 
     /**
