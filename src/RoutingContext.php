@@ -94,7 +94,7 @@ class RoutingContext implements MinkAwareContext
         }
 
         $route = $this->router::getRoute($page);
-        $url = $this->getCallable($route . $queryString);
+        $url = $this->getCallable()($route . $queryString);
 
         $this->getSession()->visit($this->locatePath($url));
     }
