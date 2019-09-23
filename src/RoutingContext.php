@@ -87,15 +87,16 @@ class RoutingContext implements MinkAwareContext
                 throw new Exception('Invalid device specified.');
         }
 
-        $url = $this->router::getRoute($page, $this->getCallable());
-
         $queryString = '';
         if ($params) {
             $queryParams = $params->getRowsHash();
             $queryString = '?' . http_build_query($queryParams);
         }
 
-        $this->getSession()->visit($this->locatePath($url . $queryString));
+        $route = $this->router::getRoute($page);
+        $url = $this->getCallable($route . $queryString);
+
+        $this->getSession()->visit($this->locatePath($url));
     }
 
     /**
