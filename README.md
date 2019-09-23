@@ -6,6 +6,7 @@ Simple routing to use named pages instead of urls.
 FeatureContext step definitions:
 - Given I am on the :page page
 - Given I am on the :page page on :device
+- Given I am on the :page with the following params:
 - Then I should be on the :arg1 page
 
 Features in Genesis\TestRouting\RoutingContxt class:

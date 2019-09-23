@@ -2,6 +2,7 @@
 
 namespace Genesis\TestRouting;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkAwareContext;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
@@ -51,9 +52,11 @@ class RoutingContext implements MinkAwareContext
     }
 
     /**
-     * @Given I am on the :page page
-     * @Given I visit the :page page
-     * @Given I visit the :page page on :device
+     * @Given I am on the ":page" page
+     * @Given I am on the ":page" page with the following param(s):
+     * @Given I visit the ":page" page
+     * @Given I visit the ":page" page on :device
+     * @Given I visit the ":page" page on :device with the following params:
      *
      * @param string   $page
      * @param mixed    $device
@@ -62,7 +65,7 @@ class RoutingContext implements MinkAwareContext
      *
      * @return void
      */
-    public function visit($page, $device = null)
+    public function visit($page, $device = null, TableNode $params = null)
     {
         if (isset($this->config['windowSizeDevice'])) {
             $device = $this->config['windowSizeDevice'];
@@ -86,7 +89,26 @@ class RoutingContext implements MinkAwareContext
 
         $url = $this->router::getRoute($page, $this->getCallable());
 
-        $this->getSession()->visit($this->locatePath($url));
+        $queryString = '';
+        if ($params) {
+            $queryParams = $params->getRowsHash();
+            $queryString = '?' . http_build_query($queryParams);
+        }
+
+        $this->getSession()->visit($this->locatePath($url . $queryString));
+    }
+
+    /**
+     * Use when testing static content available on different pages such as header and footer.
+     *
+     * @Given I am on any page
+     * @Given I am on any page on :device
+     * @param null|mixed $device
+     */
+    public function iAmOnAnyPage($device = null)
+    {
+        $allRoutes = $this->router::getRoutes();
+        $this->visit(array_rand($allRoutes, 1), $device);
     }
 
     /**
@@ -171,7 +193,7 @@ class RoutingContext implements MinkAwareContext
             sleep(1);
         }
 
-        throw new ElementNotVisible($lastErrorMessage);
+        throw new Exception($lastErrorMessage);
     }
 
     /**
