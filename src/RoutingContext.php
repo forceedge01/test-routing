@@ -39,7 +39,7 @@ class RoutingContext implements MinkAwareContext
 
         if ($this->config['windowSizeRes']) {
             list($width, $height) = explode('x', $this->config['windowSizeRes']);
-            $this->getSession()->getDriver()->resizeWindow($width, $height);
+            $this->getSession()->getDriver()->resizeWindow((int) $width, (int) $height);
         }
     }
 
