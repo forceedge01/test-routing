@@ -133,6 +133,36 @@ class RoutingContext implements MinkAwareContext
     }
 
     /**
+     * @Then I should not be on the :arg1 page
+     * @param mixed $arg1
+     * @param mixed $defaultWait
+     */
+    public function iShouldNotBeOnThePage($arg1, $defaultWait = 5)
+    {
+        $url = $this->router::getRoute($arg1, $this->getCallable());
+        $session = $this->getSession();
+
+        $this->spin(function() use ($url, $session) {
+            $currentUrl = parse_url($session->getCurrentUrl());
+            if ($url === $currentUrl['path']) {
+                throw new \Exception(sprintf('Expected not to be on page %s, but on.', $url));
+            }
+
+            return true;
+        }, $defaultWait);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getResolvedRoute($name)
+    {
+        return $this->router::getRoute($name, $this->getCallable());
+    }
+
+    /**
      * @overridable Override this method to replace placeholders if you have them in your query strings.
      *
      * @return callable|null
@@ -215,9 +245,10 @@ class RoutingContext implements MinkAwareContext
 
     /**
      * @return Session
+     * @param  null|mixed $name
      */
-    protected function getSession(): Session
+    protected function getSession($name = null): Session
     {
-        return $this->mink->getSession('javascript');
+        return $this->mink->getSession($name);
     }
 }
