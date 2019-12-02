@@ -23,7 +23,7 @@ Release detail:
 ---------------
 Major: Released first version of test routing.
 Minor: Assertion library added. New calls for building up URL's.
-Patch: NA
+Patch: Fix callable method break if no overriding method is defined.
 
 ```yml
 default:
