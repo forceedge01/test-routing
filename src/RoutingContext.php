@@ -165,11 +165,13 @@ class RoutingContext implements MinkAwareContext
     /**
      * @overridable Override this method to replace placeholders if you have them in your query strings.
      *
-     * @return callable|null
+     * @return callable
      */
     protected function getCallable()
     {
-        return null;
+        return function($url) {
+            return $url;
+        };
     }
 
     /**
